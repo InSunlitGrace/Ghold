@@ -1,69 +1,46 @@
-import Image from "next/image";
+import {budgets,cases,money,requests} from "@/lib/data";
 
-export default function Home() {
+export default function Overview(){
+  const spent=budgets.reduce((s,b)=>s+b.spent,0);
+  const limit=budgets.reduce((s,b)=>s+b.limit,0);
+  const stats=[
+    {label:"Spent this month",value:money(spent),note:`of ${money(limit)}`},
+    {label:"Pending approvals",value:String(requests.length),note:"awaiting a decision"},
+    {label:"Open cases",value:String(cases.length),note:"need attention"},
+    {label:"Recovered",value:money(0),note:"from resolved cases"}
+  ];
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="mx-auto max-w-5xl space-y-6">
+      <h1 className="text-2xl font-semibold">Overview</h1>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map(s=>(
+          <div key={s.label} className="rounded-xl border border-slate-200 bg-white p-4">
+            <div className="text-sm text-slate-500">{s.label}</div>
+            <div className="mt-1 text-2xl font-semibold tabular-nums">{s.value}</div>
+            <div className="text-xs text-slate-500">{s.note}</div>
+          </div>
+        ))}
+      </div>
+      <section className="rounded-xl border border-slate-200 bg-white p-5">
+        <h2 className="mb-4 font-medium">Budget by category</h2>
+        <div className="space-y-4">
+          {budgets.map(b=>{
+            const pct=Math.min(100,Math.round(b.spent/b.limit*100));
+            const color=pct>=95?"bg-red-500":pct>=75?"bg-amber-500":"bg-emerald-500";
+            return (
+              <div key={b.category}>
+                <div className="mb-1 flex justify-between text-sm">
+                  <span>{b.category}</span>
+                  <span className="tabular-nums text-slate-500">{money(b.spent)} / {money(b.limit)}</span>
+                </div>
+                <div className="h-2 rounded-full bg-slate-100">
+                  <div className={`h-2 rounded-full ${color}`} style={{width:`${pct}%`}}/>
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
     </div>
   );
 }
