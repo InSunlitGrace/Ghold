@@ -7,7 +7,8 @@ const links=[
   {href:"/",label:"Overview",icon:"M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"},
   {href:"/requests",label:"Requests",icon:"M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"},
   {href:"/orders",label:"Orders",icon:"M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"},
-  {href:"/cases",label:"Cases",icon:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"}
+  {href:"/cases",label:"Cases",icon:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"},
+  {href:"/dashboard",label:"Dashboard",icon:"M3 3v18h18M18 17V9M13 17V5M8 17v-3"}
 ];
 
 export default function Sidebar(){
