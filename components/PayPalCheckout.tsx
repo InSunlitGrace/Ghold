@@ -13,7 +13,7 @@ export default function PayPalCheckout({requestId}:{requestId:string}){
 
   if(status){
     return (
-      <div role="status" className="rounded-lg border border-emerald-500 bg-emerald-50 px-5 py-4 font-medium text-emerald-800">
+      <div role="status" className="rounded-2xl bg-emerald-50 px-5 py-4 font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/30">
         Payment complete for {requestId} (PayPal status: {status}).
       </div>
     );
